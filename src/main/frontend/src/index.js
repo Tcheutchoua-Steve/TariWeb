@@ -1,31 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class Greeter extends React.Component { // <1>
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
 
-  constructor(props) {
-    super(props);
-    this.state = { // <2>
-      message: "Default message"
-    }
-  }
+const events = [
+  { title: 'Meeting', start: new Date() }
+]
 
-  componentDidMount() { // <5>
-    fetch("/api/message")
-      .then(response => response.text())
-      .then(text => this.setState({message: text}));
-  }
-
-  render() { // <3>
-    return (
-      <div>
-        <span>{this.state.message}</span>
-      </div>
-    );
-  }
+export function DemoApp() {
+  return (
+    <div>
+      <h1>Demo App</h1>
+      <FullCalendar
+        plugins={[dayGridPlugin]}
+        initialView='dayGridMonth'
+        weekends={false}
+        events={events}
+        eventContent={renderEventContent}
+      />
+    </div>
+  )
 }
 
-ReactDOM.render( // <4>
-  <Greeter/>,
-  document.getElementById('root')
-);
+// a custom render function
+function renderEventContent(eventInfo) {
+  return (
+    <>
+      <b>{eventInfo.timeText}</b>
+      <i>{eventInfo.event.title}</i>
+    </>
+  )
+}
